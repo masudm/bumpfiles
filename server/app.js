@@ -1,6 +1,9 @@
 var app = require("express")();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
+var geoip = require("geoip-lite");
+
+var ids = [];
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/index.html");
@@ -16,6 +19,21 @@ io.on("connection", (socket) => {
 	//R sends their answer to I who verifies it
 	//they are connected
 	console.log("a user connected");
+
+	var socketId = socket.id;
+	var ip = socket.handshake.headers["x-real-ip"] || socket.handshake.address;
+	var port = socket.handshake.headers["x-real-port"];
+	var geo = geoip.lookup(ip);
+
+	ids.push(socketId);
+
+	socket.on("offer", (msg) => {
+		console.log("message: " + msg);
+	});
+
+	socket.on("answer", (msg) => {
+		console.log("message: " + msg);
+	});
 });
 
 http.listen(3000, () => {
