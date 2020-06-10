@@ -1,41 +1,49 @@
-var app = require("express")();
-var http = require("http").createServer(app);
-var io = require("socket.io")(http);
-var geoip = require("geoip-lite");
+require("dotenv").config();
 
-var ids = [];
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
 
+const geoip = require("geoip-lite");
+
+const mysql = require("mysql");
+const pool = mysql.createPool({
+	connectionLimit: 100,
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
+	database: process.env.DB,
+});
+
+const port = 3000;
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
+
+//helper function to escape sql
+function e(str) {
+	return pool.escape(str);
+}
+
+//routes
 app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/index.html");
 });
 
-io.on("connection", (socket) => {
-	//so the basic way it works is users are added into a queue (id, timestamp, preferably location)
-	// note these users are cleared after 10 seconds
-	//if another user is added into the queue with similar timestamp (and preferably location) they are connected
-	//the first user is the initiator - I
-	//the second user is the reciever - R
-	//the offer from I is sent to R who creates an answer
-	//R sends their answer to I who verifies it
-	//they are connected
-	console.log("a user connected");
+app.get("/connect", (req, res) => {
+	let time = Date.now(); //req.body.time;
+	let ip = req.ip;
+	let location = geoip.lookup(ip);
 
-	var socketId = socket.id;
-	var ip = socket.handshake.headers["x-real-ip"] || socket.handshake.address;
-	var port = socket.handshake.headers["x-real-port"];
-	var geo = geoip.lookup(ip);
+	let sql = `INSERT INTO connections (timestamp, ip, location) VALUES (${e(time)}, "${ip}", ${location});`;
 
-	ids.push(socketId);
-
-	socket.on("offer", (msg) => {
-		console.log("message: " + msg);
-	});
-
-	socket.on("answer", (msg) => {
-		console.log("message: " + msg);
+	pool.query(sql, function (error, results, fields) {
+		if (error) throw error;
+		console.log(results.insertId);
 	});
 });
 
-http.listen(3000, () => {
-	console.log("listening on *:3000");
-});
+app.listen(port, () => console.log(`started on port ${port}`));
