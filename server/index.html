@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <head></head>
 <body>
+	<div id="status"></div>
 	<input type="file" id="file" placeholder="Connecting to the peers, please wait"></input>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.6.2/simplepeer.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js"></script>
 	<script>
 		var p;
+		
 		$(function () {
 			var socket = io();
 			socket.emit("bump", { time: Date.now() });
@@ -30,17 +33,27 @@
 					p.signal(JSON.parse(data.offer));
 
 					p.on("connect", () => {
+						document.getElementById('status').innerHTML = "connected";
 						console.log("CONNECT");
-						p.send("whatever" + Math.random());
 					});
 
-					p.on("data", (data) => {
-						// Convert the file back to Blob
-							const file = new Blob([ data ]);
+					let fileChunks = [];
+					p.on('data', data => {
 
-						console.log('Received', file);
-						// Download the received file using downloadjs
-						//download(file, 'test.png');
+						if (data.toString() === 'Done!') {
+							// Once, all the chunks are received, combine them to form a Blob
+							const file = new Blob(fileChunks);
+						
+							console.log('Received', file);
+							// Download the received file using downloadjs
+							download(file, 'test.png');
+							fileChunks = []; //clear it
+						}
+						else {
+							// Keep appending various file chunks 
+							fileChunks.push(data);
+						}
+
 					});
 				});
 			});
@@ -48,18 +61,33 @@
 
 		const input = document.getElementById('file');
 
-  // Event listener on the file input
-  input.addEventListener('change', () => {
-    const file = input.files[0];
-    console.log('Sending', file)
+// Event listener on the file input
+input.addEventListener('change', () => {
+	const file = input.files[0];
+	console.log('Sending', file);
 
-    // We convert the file from Blob to ArrayBuffer, since some browsers don't work with blobs
-    file.arrayBuffer()
-    .then(buffer => {
-      // Off goes the file!
-      p.send(buffer);
-    });
+	// We convert the file from Blob to ArrayBuffer
+	file.arrayBuffer()
+	.then(buffer => {
+		/**
+		 * A chunkSize (in Bytes) is set here
+		 * I have it set to 16KB
+		 */
+		const chunkSize = 16 * 1024;
 
-  });
+		// Keep chunking, and sending the chunks to the other peer
+		while(buffer.byteLength) {
+			const chunk = buffer.slice(0, chunkSize);
+			buffer = buffer.slice(chunkSize, buffer.byteLength);
+			
+			// Off goes the chunk!
+			p.send(chunk);
+		}
+
+		// End message to signal that all chunks have been sent
+		p.send('Done!');
+	});
+
+});
 	</script>
 </body>

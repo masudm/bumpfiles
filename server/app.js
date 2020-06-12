@@ -17,6 +17,7 @@ const pool = mysql.createPool({
 });
 
 const port = 3000;
+const interval = 5000; //t - interval <= t <= t + interval  within this interval to be considered
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -49,7 +50,7 @@ io.on("connection", (socket) => {
 			if (error) throw error;
 
 			let sql = `SELECT * FROM connections WHERE id != '${results.insertId}'
-			AND timestamp BETWEEN ${time - 1000} AND ${time + 1000}`;
+			AND timestamp BETWEEN ${time - interval} AND ${time + interval}`;
 			pool.query(sql, function (error, results, fields) {
 				//there could be more than 1. todo: confidence level
 				if (results.length == 1) {
