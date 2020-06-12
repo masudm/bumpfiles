@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <head></head>
 <body>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script>
+		$(function () {
+			var socket = io();
+			socket.emit("bump", { time: Date.now() });
+		});
+	</script>
 	<script src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
 	<script>
 		var peer = new Peer(1);

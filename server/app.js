@@ -1,7 +1,8 @@
 require("dotenv").config();
 
-const express = require("express");
-const app = express();
+const app = require("express")();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 const bodyParser = require("body-parser");
 
 const geoip = require("geoip-lite");
@@ -33,17 +34,30 @@ app.get("/", (req, res) => {
 	res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/connect", (req, res) => {
-	let time = Date.now(); //req.body.time;
-	let ip = req.ip;
-	let location = geoip.lookup(ip);
+io.on("connection", (socket) => {
+	socket.on("bump", function (data) {
+		let time = e(data.time);
+		let ip = socket.request.connection.remoteAddress;
+		let location = geoip.lookup(ip);
+		let deviceId = socket.id;
+		console.log(time, ip, location, deviceId);
 
-	let sql = `INSERT INTO connections (timestamp, ip, location) VALUES (${e(time)}, "${ip}", ${location});`;
+		let sql = `INSERT INTO connections (timestamp, ip, location, device) 
+		VALUES (${time}, "${ip}", ${location}, "${deviceId}");`;
 
-	pool.query(sql, function (error, results, fields) {
-		if (error) throw error;
-		console.log(results.insertId);
+		pool.query(sql, function (error, results, fields) {
+			if (error) throw error;
+
+			let sql = `SELECT * FROM connections WHERE id != '${results.insertId}'
+			AND timestamp BETWEEN ${time - 1000} AND ${time + 1000}`;
+			console.log(sql);
+			pool.query(sql, function (error, results, fields) {
+				console.log(results);
+			});
+		});
 	});
 });
 
-app.listen(port, () => console.log(`started on port ${port}`));
+http.listen(3000, () => {
+	console.log("listening on " + port);
+});
