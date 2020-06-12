@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
 	socket.on("bump", function (data) {
 		let time = e(data.time);
-		let ip = socket.request.connection.remoteAddress;
+		let ip = 0; //socket.request.connection.remoteAddress;
 		let location = geoip.lookup(ip);
 		let deviceId = socket.id;
 		console.log(time, ip, location, deviceId);
@@ -50,9 +50,15 @@ io.on("connection", (socket) => {
 
 			let sql = `SELECT * FROM connections WHERE id != '${results.insertId}'
 			AND timestamp BETWEEN ${time - 1000} AND ${time + 1000}`;
-			console.log(sql);
 			pool.query(sql, function (error, results, fields) {
-				console.log(results);
+				//there could be more than 1. todo: confidence level
+				if (results.length == 1) {
+					roomId = "abc";
+					io.to(deviceId).emit("bumped", roomId);
+					io.to(results[0].device).emit("bumped", roomId);
+
+					console.log("bumped: " + results[0].device);
+				}
 			});
 		});
 	});
