@@ -54,13 +54,17 @@ io.on("connection", (socket) => {
 				//there could be more than 1. todo: confidence level
 				if (results.length == 1) {
 					roomId = "abc";
-					io.to(deviceId).emit("bumped", roomId);
-					io.to(results[0].device).emit("bumped", roomId);
+					io.to(deviceId).emit("bumped", { initiator: true, room: roomId, recipient: results[0].device });
+					io.to(results[0].device).emit("bumped", { initiator: false, room: roomId, recipient: deviceId });
 
 					console.log("bumped: " + results[0].device);
 				}
 			});
 		});
+	});
+
+	socket.on("p2p", function (data) {
+		io.to(data.recipient).emit("p2p", { offer: data.offer });
 	});
 });
 

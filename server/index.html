@@ -3,23 +3,41 @@
 <body>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.6.2/simplepeer.min.js"></script>
 	<script>
+		var p;
 		$(function () {
 			var socket = io();
 			socket.emit("bump", { time: Date.now() });
 
 			socket.on("bumped", function (data) {
 				console.log(data);
+
+				p = new SimplePeer({
+					initiator: data.initiator,
+					trickle: false,
+				});
+
+				p.on("error", (err) => console.log("error", err));
+
+				p.on("signal", (offer) => {
+					console.log("SIGNAL", JSON.stringify(offer));
+					socket.emit("p2p", { offer: JSON.stringify(offer), recipient: data.recipient });
+				});
+
+				socket.on("p2p", function (data) {
+					p.signal(JSON.parse(data.offer));
+
+					p.on("connect", () => {
+						console.log("CONNECT");
+						p.send("whatever" + Math.random());
+					});
+
+					p.on("data", (data) => {
+						console.log("data: " + data);
+					});
+				});
 			});
-		});
-	</script>
-	<script src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
-	<script>
-		var peer = new Peer(1);
-		conn = peer.connect(1);
-		conn.send("hello");
-		conn.on("data", function (data) {
-			console.log(data);
 		});
 	</script>
 </body>
