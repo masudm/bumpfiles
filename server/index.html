@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <head></head>
 <body>
-	<div id="status"></div>
 	<input type="file" id="file" placeholder="Connecting to the peers, please wait"></input>
+	<div id="status"></div>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.6.2/simplepeer.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js"></script>
 	<script>
+		function statusLog(str) {
+			document.getElementById('status').innerHTML +="\n" + JSON.stringify(str);
+		}
 		var p;
 		
 		$(function () {
@@ -15,17 +18,17 @@
 			socket.emit("bump", { time: Date.now() });
 
 			socket.on("bumped", function (data) {
-				console.log(data);
+				statusLog(data);
 
 				p = new SimplePeer({
 					initiator: data.initiator,
-					trickle: false,
+					trickle: true,
 				});
 
-				p.on("error", (err) => console.log("error", err));
+				p.on("error", (err) => statusLog(err));
 
 				p.on("signal", (offer) => {
-					console.log("SIGNAL", JSON.stringify(offer));
+					statusLog("SIGNAL", (offer));
 					socket.emit("p2p", { offer: JSON.stringify(offer), recipient: data.recipient });
 				});
 
@@ -33,8 +36,7 @@
 					p.signal(JSON.parse(data.offer));
 
 					p.on("connect", () => {
-						document.getElementById('status').innerHTML = "connected";
-						console.log("CONNECT");
+						statusLog("CONNECT");
 					});
 
 					let fileChunks = [];
@@ -44,7 +46,7 @@
 							// Once, all the chunks are received, combine them to form a Blob
 							const file = new Blob(fileChunks);
 						
-							console.log('Received', file);
+							statusLog('Received', file);
 							// Download the received file using downloadjs
 							download(file, 'test.png');
 							fileChunks = []; //clear it
@@ -64,7 +66,7 @@
 // Event listener on the file input
 input.addEventListener('change', () => {
 	const file = input.files[0];
-	console.log('Sending', file);
+	statusLog('Sending', file);
 
 	// We convert the file from Blob to ArrayBuffer
 	file.arrayBuffer()
