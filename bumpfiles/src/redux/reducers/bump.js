@@ -1,15 +1,15 @@
 import * as actions from "../actionTypes";
 
-const initialState = {};
+const initialState = {
+	bumped: 0,
+};
 
 export default function (state = initialState, action) {
 	switch (action.type) {
-		case actions.BUMP: {
-			const { time } = action.payload;
-			return {
-				time,
-			};
-		}
+		case actions.BUMP:
+			return Object.assign({}, state, {
+				bumped: action.time,
+			});
 		default:
 			return state;
 	}

@@ -1,4 +1,4 @@
 import { combineReducers } from "redux";
-import connect from "./connect";
+import bump from "./bump";
 
-export default combineReducers({ connect });
+export default combineReducers({ bump });
