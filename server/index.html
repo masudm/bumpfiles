@@ -28,7 +28,7 @@
 				p.on("error", (err) => statusLog(err));
 
 				p.on("signal", (offer) => {
-					statusLog("SIGNAL", (offer));
+					statusLog("SIGNAL" + JSON.stringify(offer));
 					socket.emit("p2p", { offer: JSON.stringify(offer), recipient: data.recipient });
 				});
 

@@ -37,7 +37,6 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
 	socket.on("bump", function (data) {
-		socket.broadcast.emit('bumped', 'can you hear me?', 1, 2, 'abc');
 		let time = e(data.time);
 		let ip = 0; //socket.request.connection.remoteAddress;
 		let location = geoip.lookup(ip);
@@ -51,6 +50,7 @@ io.on("connection", (socket) => {
 			if (error) throw error;
 
 			let sql = `SELECT * FROM connections WHERE id != '${results.insertId}'
+			AND device != "${deviceId}"
 			AND timestamp BETWEEN ${time - interval} AND ${time + interval}`;
 			pool.query(sql, function (error, results, fields) {
 				//there could be more than 1. todo: confidence level

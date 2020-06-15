@@ -1,9 +1,11 @@
+import { bump, bumped } from "../../redux/actions/bump";
+import BumpButton from "../Bump/Bump";
+
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import io from "socket.io-client";
 
-import { bump } from "../../redux/actions/bump";
-import BumpButton from "../Bump/Bump";
+import io from "socket.io-client";
+var SimplePeer = require("simple-peer");
 
 export function Home() {
 	const socket = io("http://localhost:3001");
@@ -13,16 +15,39 @@ export function Home() {
 
 	useEffect(() => {
 		console.log("listening");
-		socket.on("bumped", (payload) => {
-			// update messages
-			//useDispatch({ type: UPDATE_CHAT_LOG }, payload);
-			console.log(payload);
+		socket.on("bumped", (data) => {
+			gotBumped(data);
 		});
 	});
 
 	const b = () => {
 		socket.emit("bump", { time: Date.now() });
 		dispatch(bump(Date.now()));
+	};
+
+	const gotBumped = (data) => {
+		const p = new SimplePeer({
+			initiator: data.initiator,
+			trickle: true,
+		});
+
+		p.on("error", (err) => console.log(err));
+
+		p.on("signal", (offer) => {
+			console.log("SIGNAL" + JSON.stringify(offer));
+			socket.emit("p2p", { offer: JSON.stringify(offer), recipient: data.recipient });
+		});
+
+		socket.on("p2p", function (data) {
+			p.signal(JSON.parse(data.offer));
+
+			p.on("connect", () => {
+				console.log("CONNECT");
+				dispatch(bumped(p));
+			});
+
+			p.on("data", (data) => {});
+		});
 	};
 
 	return (
