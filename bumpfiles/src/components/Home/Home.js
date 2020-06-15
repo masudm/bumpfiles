@@ -1,27 +1,17 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { bump } from "../../redux/actions/bump";
 import BumpButton from "../Bump/Bump";
 
-const HomeView = ({ state, onBump }) => (
-	<div>
-		<BumpButton onClick={() => onBump()} />
-		<i>bumped at: {JSON.stringify(state)}</i>
-		<i>help</i>
-	</div>
-);
-
-const mapStateToProps = (state) => {
-	return { state };
+export const Home = () => {
+	const state = useSelector((state) => state);
+	const dispatch = useDispatch();
+	return (
+		<div>
+			<BumpButton onClick={() => dispatch(bump(Date.now()))} />
+			<i>bumped at: {JSON.stringify(state)}</i>
+			<i>help</i>
+		</div>
+	);
 };
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		onBump: () => {
-			dispatch(bump(Date.now()));
-		},
-	};
-};
-
-export const Home = connect(mapStateToProps, mapDispatchToProps)(HomeView);
