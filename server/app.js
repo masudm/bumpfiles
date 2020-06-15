@@ -16,7 +16,7 @@ const pool = mysql.createPool({
 	database: process.env.DB,
 });
 
-const port = 3000;
+const port = 3001;
 const interval = 5000; //t - interval <= t <= t + interval  within this interval to be considered
 
 // parse application/x-www-form-urlencoded
@@ -37,6 +37,7 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
 	socket.on("bump", function (data) {
+		socket.broadcast.emit('bumped', 'can you hear me?', 1, 2, 'abc');
 		let time = e(data.time);
 		let ip = 0; //socket.request.connection.remoteAddress;
 		let location = geoip.lookup(ip);
@@ -69,6 +70,6 @@ io.on("connection", (socket) => {
 	});
 });
 
-http.listen(3000, () => {
+http.listen(port, () => {
 	console.log("listening on " + port);
 });
