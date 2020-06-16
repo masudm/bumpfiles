@@ -8,9 +8,6 @@ export const Header = ({}) => (
 				<Link to="/">Home</Link>
 			</li>
 			<li>
-				<Link to="/pin">Pin</Link>
-			</li>
-			<li>
 				<Link to="/transfer">transfer</Link>
 			</li>
 		</ul>

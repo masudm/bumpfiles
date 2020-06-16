@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Header } from "./components/Header/Header";
 import { Home } from "./components/Home/Home";
-import { Pin } from "./components/Pin/Pin";
 import { Transfer } from "./components/Transfer/Transfer";
 
 export default function App() {
@@ -16,9 +15,6 @@ export default function App() {
 				<Switch>
 					<Route path="/transfer">
 						<Transfer />
-					</Route>
-					<Route path="/pin">
-						<Pin />
 					</Route>
 					<Route path="/">
 						<Home />
