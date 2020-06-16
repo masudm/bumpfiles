@@ -3,11 +3,12 @@ import BumpButton from "../Bump/Bump";
 
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
+import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 var SimplePeer = require("simple-peer");
 
 export function Home() {
+	const history = useHistory();
 	const socket = io("http://localhost:3001");
 
 	const state = useSelector((state) => state);
@@ -28,7 +29,7 @@ export function Home() {
 	const gotBumped = (data) => {
 		const p = new SimplePeer({
 			initiator: data.initiator,
-			trickle: false,
+			trickle: true,
 		});
 
 		p.on("error", (err) => console.log(err));
@@ -44,6 +45,8 @@ export function Home() {
 			p.on("connect", () => {
 				console.log("CONNECT");
 				dispatch(bumped(p));
+
+				history.push("/transfer");
 			});
 
 			p.on("data", (data) => {
