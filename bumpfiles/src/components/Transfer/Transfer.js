@@ -6,6 +6,12 @@ import FileInput from "@brainhubeu/react-file-input";
 import { get_file, send_file } from "../../redux/actions/transfer";
 
 export function Transfer() {
+	/**
+	 * A chunkSize (in Bytes) is set here
+	 * I have it set to 16KB
+	 */
+	const chunkSize = 16 * 1024;
+
 	const history = useHistory();
 
 	const state = useSelector((state) => state);
@@ -20,27 +26,31 @@ export function Transfer() {
 	});
 
 	function recieve() {
+		let fileDownloaded = 0;
 		let fileChunks = [];
 		let fileInfo = null;
+		let transferringFile = false;
 		state.bump.peer.on("data", (data) => {
 			let str = data.toString();
+			if (str == "Done!") {
+				transferringFile = false;
+				const file = new Blob(fileChunks);
+				const localImg = window.URL.createObjectURL(file);
+				dispatch(get_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime, localImg));
+				fileChunks = [];
+				fileDownloaded = 0;
+			}
 
-			let transferringFile = false;
+			if (transferringFile) {
+				fileChunks.push(data);
+				fileDownloaded += chunkSize;
+				console.log("finished: " + (fileDownloaded / fileInfo.size) * 100 + "%");
+			}
 
 			if (str.substring(0, 4) == "info") {
 				fileInfo = JSON.parse(str.substring(4));
 				console.log(fileInfo);
 				transferringFile = true;
-			}
-
-			if (str == "Done!") {
-				transferringFile = false;
-				dispatch(get_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime, fileChunks));
-				fileChunks = [];
-			}
-
-			if (transferringFile) {
-				fileChunks.push(data);
 			}
 		});
 	}
@@ -58,12 +68,6 @@ export function Transfer() {
 
 		// We convert the file from Blob to ArrayBuffer
 		file.arrayBuffer().then((buffer) => {
-			/**
-			 * A chunkSize (in Bytes) is set here
-			 * I have it set to 16KB
-			 */
-			const chunkSize = 16 * 1024;
-
 			// Keep chunking, and sending the chunks to the other peer
 			while (buffer.byteLength) {
 				const chunk = buffer.slice(0, chunkSize);
