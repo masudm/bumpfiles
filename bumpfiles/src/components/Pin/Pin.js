@@ -1,10 +1,12 @@
 import React from "react";
+import ReactCodeInput from "react-code-input";
 
-export const Pin = ({}) => (
-	<div>
-		<strong>is this your pin</strong>
-		<b>1234</b>
-		<button>yes</button>
-		<button>no</button>
-	</div>
-);
+import "./Pin.css";
+
+export function Pin() {
+	return (
+		<div>
+			<ReactCodeInput type="number" fields={4} />
+		</div>
+	);
+}
