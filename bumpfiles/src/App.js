@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import io from "socket.io-client";
-
 import { Header } from "./components/Header/Header";
 import { Home } from "./components/Home/Home";
 import { Pin } from "./components/Pin/Pin";
@@ -30,5 +28,3 @@ export default function App() {
 		</Router>
 	);
 }
-
-export const socket = io("http://localhost:3001");
