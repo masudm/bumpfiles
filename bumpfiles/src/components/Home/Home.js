@@ -46,7 +46,9 @@ export function Home() {
 				dispatch(bumped(p));
 			});
 
-			p.on("data", (data) => {});
+			p.on("data", (data) => {
+				console.log(data);
+			});
 		});
 	};
 
