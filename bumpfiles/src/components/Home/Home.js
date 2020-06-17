@@ -1,8 +1,8 @@
-import { bump, bumped } from "../../redux/actions/bump";
+import { bump, bumped, not_found } from "../../redux/actions/bump";
 import BumpButton from "../Bump/Bump";
 import "./Home.css";
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 var SimplePeer = require("simple-peer");
@@ -11,6 +11,7 @@ export function Home() {
 	const history = useHistory();
 	const socket = io("http://localhost:3001");
 
+	const state = useSelector((state) => state.bump);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -23,6 +24,10 @@ export function Home() {
 	const b = () => {
 		socket.emit("bump", { time: Date.now() });
 		dispatch(bump(Date.now()));
+
+		window.setTimeout(() => {
+			dispatch(not_found());
+		}, 5000);
 	};
 
 	const gotBumped = (data) => {
@@ -51,8 +56,8 @@ export function Home() {
 	};
 
 	return (
-		<div class="home">
-			<BumpButton onClick={() => b()} />
+		<div className="home">
+			<BumpButton onClick={() => b()} isListening={state.listening} time={state.bumped} />
 		</div>
 	);
 }

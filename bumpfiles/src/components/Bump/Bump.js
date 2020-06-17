@@ -3,10 +3,22 @@ import PropTypes from "prop-types";
 
 import "./Bump.css";
 
-const BumpButton = ({ onClick, isListening = false }) => {
+const BumpButton = ({ onClick, isListening, time }) => {
 	return (
-		<div className="bump" onClick={() => onClick()}>
-			{isListening ? "LISTENING..." : "BUMP"}
+		<div>
+			<div className="bump" onClick={() => onClick()}>
+				{isListening ? "BUMPED!" : "BUMP"}
+			</div>
+			<div className="info">
+				{/* if the time is more than 0 then it has bumped at least once so we can show info. */}
+				{/* within that check what type of info to display... */}
+				{/* if within an if using ternary expressions */}
+				{time > 0
+					? isListening
+						? "Listening for peers... Bump another device!"
+						: "No peers found. Try again!"
+					: ""}
+			</div>
 		</div>
 	);
 };
@@ -14,6 +26,7 @@ const BumpButton = ({ onClick, isListening = false }) => {
 BumpButton.propTypes = {
 	onClick: PropTypes.func.isRequired,
 	isListening: PropTypes.bool,
+	time: PropTypes.number,
 };
 
 export default BumpButton;
