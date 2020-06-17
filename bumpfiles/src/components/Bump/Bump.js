@@ -1,12 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const BumpButton = ({ onClick }) => {
-	return <button onClick={() => onClick()}>BUMP</button>;
+import "./Bump.css";
+
+const BumpButton = ({ onClick, isListening = false }) => {
+	return (
+		<div className="bump" onClick={() => onClick()}>
+			{isListening ? "LISTENING..." : "BUMP"}
+		</div>
+	);
 };
 
 BumpButton.propTypes = {
 	onClick: PropTypes.func.isRequired,
+	isListening: PropTypes.bool,
 };
 
 export default BumpButton;

@@ -1,8 +1,8 @@
 import { bump, bumped } from "../../redux/actions/bump";
 import BumpButton from "../Bump/Bump";
-
+import "./Home.css";
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 var SimplePeer = require("simple-peer");
@@ -11,7 +11,6 @@ export function Home() {
 	const history = useHistory();
 	const socket = io("http://localhost:3001");
 
-	const state = useSelector((state) => state);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -52,10 +51,8 @@ export function Home() {
 	};
 
 	return (
-		<div>
+		<div class="home">
 			<BumpButton onClick={() => b()} />
-			<i>bumped at: {JSON.stringify(state)}</i>
-			<i>help</i>
 		</div>
 	);
 }
