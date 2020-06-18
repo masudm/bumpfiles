@@ -8,6 +8,7 @@
 	padding: 2vw;
 	padding-bottom: 0px;
 	animation: fadeOutRGBA 3s linear infinite;
+	border-radius: 10px;
 	box-shadow: 5px 5px 6px 0px rgba(102, 252, 241, 0.5);
 }
 

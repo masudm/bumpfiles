@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import FileInput from "@brainhubeu/react-file-input";
+import "@brainhubeu/react-file-input/dist/react-file-input.css";
 import { get_file, send_file } from "../../redux/actions/transfer";
+
+import "./Transfer.css";
 
 export function Transfer() {
 	/**
@@ -19,7 +22,7 @@ export function Transfer() {
 
 	useEffect(() => {
 		if (state.bump.peer == null) {
-			history.push("/");
+			//history.push("/");
 		} else {
 			recieve();
 		}
@@ -84,8 +87,9 @@ export function Transfer() {
 	}
 
 	return (
-		<div>
-			<FileInput label="Awesome Uploader" onChangeCallback={send} />
+		<div className="transfer">
+			{/* <FileInput label="uploader" dropOnDocument={true} onChangeCallback={send} className="uploader" /> */}
+			<FileInput label="uploader" cropTool={true} className="uploader" />
 			<ul>
 				{state.transfer.files.map((value, index) => {
 					return <li key={index}>{JSON.stringify(value)}</li>;
