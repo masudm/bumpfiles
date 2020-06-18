@@ -5,9 +5,9 @@
 	color: #66fcf1;
 	background-color: white;
 	display: inline;
-	padding: 15px;
+	padding: 2vw;
 	padding-bottom: 0px;
-	animation: fadeOutRGBA 5s linear infinite;
+	animation: fadeOutRGBA 3s linear infinite;
 	box-shadow: 5px 5px 6px 0px rgba(102, 252, 241, 0.5);
 }
 
@@ -16,7 +16,7 @@
 		box-shadow: 5px 5px 6px 0px rgba(102, 252, 241, 1);
 	}
 	50% {
-		box-shadow: 5px 5px 6px 0px rgba(102, 252, 241, 0.7);
+		box-shadow: 5px 5px 6px 0px rgba(102, 252, 241, 0.5);
 	}
 	100% {
 		box-shadow: 5px 5px 6px 0px rgba(102, 252, 241, 1);
