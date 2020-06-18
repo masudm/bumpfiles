@@ -1,0 +1,30 @@
+.files {
+	margin: 20px 0;
+	padding: 20px;
+	background-color: white;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.files div {
+	width: 100%;
+}
+
+.uploader {
+	font-family: "Josefin Sans", sans-serif;
+	font-size: 1.2em;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	border: 2px solid transparent;
+	border-radius: 10px;
+	text-align: center;
+	padding: 40px 0;
+}
+
+.uploader-drag {
+	border: 2px dashed #66fcf1;
+}
+.uploader b {
+	color: #685fff;
+}
