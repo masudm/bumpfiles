@@ -6,6 +6,7 @@ import { get_file, send_file } from "../../redux/actions/transfer";
 
 import "./Transfer.css";
 import Uploader from "../Uploader/Uploader";
+import File from "../File/File";
 
 export function Transfer() {
 	/**
@@ -59,11 +60,10 @@ export function Transfer() {
 
 	function send(data) {
 		const file = data[0];
-
 		const fileInfo = {
 			name: file.name,
 			size: file.size,
-			mime: file.mimeType,
+			mime: file.type,
 		};
 		console.log("Sending");
 		state.bump.peer.send("info" + JSON.stringify(fileInfo));
@@ -81,7 +81,7 @@ export function Transfer() {
 
 			// End message to signal that all chunks have been sent
 			state.bump.peer.send("Done!");
-			dispatch(send_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime));
+			dispatch(send_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime, file.preview.url));
 		});
 	}
 
@@ -92,7 +92,7 @@ export function Transfer() {
 			<Uploader onChange={send} />
 			<ul>
 				{state.transfer.files.map((value, index) => {
-					return <li key={index}>{JSON.stringify(value)}</li>;
+					return <File key={index} data={value} />;
 				})}
 			</ul>
 		</div>

@@ -1,0 +1,17 @@
+.file {
+	background-color: white;
+	width: 100%;
+	border-radius: 10px;
+	padding: 20px;
+	margin-bottom: 10px;
+	display: flex;
+}
+
+.preview {
+	width: 20%;
+}
+
+.fileInfo {
+	font-family: "Josefin Sans", sans-serif;
+	margin-left: 10px;
+}
