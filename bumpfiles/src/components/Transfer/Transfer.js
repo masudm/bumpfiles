@@ -15,6 +15,8 @@ export function Transfer() {
 	 */
 	const chunkSize = 16 * 1024;
 
+	let bitsSent = 0;
+
 	const history = useHistory();
 
 	const state = useSelector((state) => state);
@@ -47,7 +49,7 @@ export function Transfer() {
 			if (transferringFile) {
 				fileChunks.push(data);
 				fileDownloaded += chunkSize;
-				console.log("finished: " + (fileDownloaded / fileInfo.size) * 100 + "%");
+				console.log("finished: " + Math.min(100, (fileDownloaded / fileInfo.size) * 100) + "%");
 			}
 
 			if (str.substring(0, 4) == "info") {
@@ -68,6 +70,8 @@ export function Transfer() {
 		console.log("Sending");
 		state.bump.peer.send("info" + JSON.stringify(fileInfo));
 
+		dispatch(send_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime, file.preview.url));
+
 		// We convert the file from Blob to ArrayBuffer
 		file.arrayBuffer().then((buffer) => {
 			// Keep chunking, and sending the chunks to the other peer
@@ -77,22 +81,22 @@ export function Transfer() {
 
 				// Off goes the chunk!
 				state.bump.peer.send(chunk);
+				bitsSent += chunk.byteLength;
+
+				console.log(Math.min(100, (bitsSent / fileInfo.size) * 100) + "% sent");
 			}
 
 			// End message to signal that all chunks have been sent
 			state.bump.peer.send("Done!");
-			dispatch(send_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime, file.preview.url));
 		});
 	}
 
 	return (
 		<div className="transfer">
-			{/* <FileInput label="uploader" dropOnDocument={true} onChangeCallback={send} className="uploader" /> */}
-			{/* <FileInput label="uploader" cropTool={true} className="uploader" /> */}
 			<Uploader onChange={send} />
 			<ul>
 				{state.transfer.files.map((value, index) => {
-					return <File key={index} data={value} />;
+					return <File key={index} data={value} bits={bitsSent} />;
 				})}
 			</ul>
 		</div>

@@ -14,4 +14,36 @@
 .fileInfo {
 	font-family: "Josefin Sans", sans-serif;
 	margin-left: 10px;
+	width: 40%;
+	word-break: break-word;
+}
+
+.progress {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.progress-bar {
+	height: 10px;
+	width: 50%;
+	background-color: #66fcf1;
+	border-radius: 10px;
+}
+
+.progress-finished {
+	border: 1px dashed black;
+	margin-bottom: 10px;
+	border-radius: 10px;
+}
+
+.progress-info {
+	text-align: center;
+	font-family: "Josefin Sans", sans-serif;
+	font-size: 1.2em;
+}
+
+.progress-info:after {
+	content: "50%";
 }
