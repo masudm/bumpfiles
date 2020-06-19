@@ -21,12 +21,13 @@ export function Transfer() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		console.log("hello");
 		if (state.bump.peer == null) {
 			history.push("/");
 		} else {
 			recieve();
 		}
-	});
+	}, []);
 
 	function recieve() {
 		let fileDownloaded = 0;
