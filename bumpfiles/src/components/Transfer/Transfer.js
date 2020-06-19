@@ -95,7 +95,7 @@ export function Transfer() {
 			<Uploader onChange={send} />
 			<ul>
 				{state.transfer.files.map((value, index) => {
-					return <File key={index} data={value} bits={0} />;
+					return <File key={index} data={value} />;
 				})}
 			</ul>
 		</div>

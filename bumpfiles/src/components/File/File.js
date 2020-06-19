@@ -3,8 +3,7 @@ import convertSize from "convert-size";
 
 import "./File.css";
 
-export default function File({ key, data, bits }) {
-	console.log(bits);
+export default function File({ key, data }) {
 	function getInfo() {
 		return (
 			<div className="fileInfo">
