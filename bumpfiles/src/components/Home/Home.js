@@ -9,7 +9,7 @@ var SimplePeer = require("simple-peer");
 
 export function Home() {
 	const history = useHistory();
-	const socket = io("http://localhost:3001");
+	const socket = io("http://192.168.0.189:3001");
 
 	const state = useSelector((state) => state.bump);
 	const dispatch = useDispatch();
@@ -33,7 +33,7 @@ export function Home() {
 	const gotBumped = (data) => {
 		const p = new SimplePeer({
 			initiator: data.initiator,
-			trickle: false,
+			trickle: true,
 		});
 
 		p.on("error", (err) => console.log(err));

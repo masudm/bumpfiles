@@ -1,11 +1,11 @@
 .bump {
 	cursor: pointer;
-	font-size: 10vw;
+	font-size: 5em;
 	font-family: "Josefin Sans", sans-serif;
 	color: #66fcf1;
 	background-color: white;
 	display: inline;
-	padding: 2vw;
+	padding: 0.2em;
 	padding-bottom: 0px;
 	animation: fadeOutRGBA 3s linear infinite;
 	border-radius: 10px;

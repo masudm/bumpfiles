@@ -8,6 +8,8 @@ import "./Transfer.css";
 import Uploader from "../Uploader/Uploader";
 import File from "../File/File";
 
+import "./SafariBlobFix";
+
 export function Transfer() {
 	/**
 	 * A chunkSize (in Bytes) is set here

@@ -8,13 +8,18 @@
 }
 
 .preview {
-	width: 20%;
+	max-width: 30%;
+	max-height: 20vh;
+	width: auto;
+	height: auto;
+	display: block;
+	object-fit: contain;
 }
 
 .fileInfo {
 	font-family: "Josefin Sans", sans-serif;
 	margin-left: 10px;
-	width: 40%;
+	width: 60%;
 	word-break: break-word;
 	display: flex;
 	flex-direction: column;
