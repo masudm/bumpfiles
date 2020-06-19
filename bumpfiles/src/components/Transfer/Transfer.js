@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { get_file, send_file } from "../../redux/actions/transfer";
+import { get_file, send_file, sent_file } from "../../redux/actions/transfer";
 
 import "./Transfer.css";
 import Uploader from "../Uploader/Uploader";
@@ -66,9 +66,11 @@ export function Transfer() {
 			mime: file.type,
 		};
 
+		let fileId = Date.now();
+
 		console.log("Sending");
 		state.bump.peer.send("info" + JSON.stringify(fileInfo));
-		dispatch(send_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime, file.preview.url));
+		dispatch(send_file(fileId, fileInfo.name, fileInfo.size, fileInfo.mime, file.preview.url));
 
 		let bitsSent = 0;
 		// We convert the file from Blob to ArrayBuffer
@@ -87,6 +89,7 @@ export function Transfer() {
 
 			// End message to signal that all chunks have been sent
 			state.bump.peer.send("Done!");
+			dispatch(sent_file(fileId));
 		});
 	}
 
