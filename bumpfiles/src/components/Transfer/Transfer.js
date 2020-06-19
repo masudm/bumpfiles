@@ -15,8 +15,6 @@ export function Transfer() {
 	 */
 	const chunkSize = 16 * 1024;
 
-	let bitsSent = 0;
-
 	const history = useHistory();
 
 	const state = useSelector((state) => state);
@@ -24,7 +22,7 @@ export function Transfer() {
 
 	useEffect(() => {
 		if (state.bump.peer == null) {
-			//history.push("/");
+			history.push("/");
 		} else {
 			recieve();
 		}
@@ -67,11 +65,12 @@ export function Transfer() {
 			size: file.size,
 			mime: file.type,
 		};
+
 		console.log("Sending");
 		state.bump.peer.send("info" + JSON.stringify(fileInfo));
-
 		dispatch(send_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime, file.preview.url));
 
+		let bitsSent = 0;
 		// We convert the file from Blob to ArrayBuffer
 		file.arrayBuffer().then((buffer) => {
 			// Keep chunking, and sending the chunks to the other peer
@@ -96,7 +95,7 @@ export function Transfer() {
 			<Uploader onChange={send} />
 			<ul>
 				{state.transfer.files.map((value, index) => {
-					return <File key={index} data={value} bits={bitsSent} />;
+					return <File key={index} data={value} bits={0} />;
 				})}
 			</ul>
 		</div>
