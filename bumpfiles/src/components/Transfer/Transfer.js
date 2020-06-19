@@ -47,12 +47,11 @@ export function Transfer() {
 			if (transferringFile) {
 				fileChunks.push(data);
 				fileDownloaded += chunkSize;
-				console.log("finished: " + Math.min(100, (fileDownloaded / fileInfo.size) * 100) + "%");
+				//console.log("finished: " + Math.min(100, (fileDownloaded / fileInfo.size) * 100) + "%");
 			}
 
 			if (str.substring(0, 4) == "info") {
 				fileInfo = JSON.parse(str.substring(4));
-				console.log(fileInfo);
 				transferringFile = true;
 			}
 		});
@@ -85,7 +84,7 @@ export function Transfer() {
 				state.bump.peer.send(chunk);
 				bitsSent += chunk.byteLength;
 
-				console.log(Math.min(100, (bitsSent / fileInfo.size) * 100) + "% sent");
+				//console.log(Math.min(100, (bitsSent / fileInfo.size) * 100) + "% sent");
 			}
 
 			// End message to signal that all chunks have been sent

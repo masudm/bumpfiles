@@ -33,7 +33,7 @@ export function Home() {
 	const gotBumped = (data) => {
 		const p = new SimplePeer({
 			initiator: data.initiator,
-			trickle: true,
+			trickle: false,
 		});
 
 		p.on("error", (err) => console.log(err));
