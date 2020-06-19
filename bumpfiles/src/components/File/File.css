@@ -46,3 +46,9 @@
 	font-family: "Josefin Sans", sans-serif;
 	font-size: 1.2em;
 }
+
+.download {
+	text-decoration: underline;
+	color: #685fff;
+	cursor: pointer;
+}

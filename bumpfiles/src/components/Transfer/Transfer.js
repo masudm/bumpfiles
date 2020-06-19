@@ -70,6 +70,7 @@ export function Transfer() {
 
 		console.log("Sending");
 		state.bump.peer.send("info" + JSON.stringify(fileInfo));
+
 		dispatch(send_file(fileId, fileInfo.name, fileInfo.size, fileInfo.mime, file.preview.url));
 
 		let bitsSent = 0;

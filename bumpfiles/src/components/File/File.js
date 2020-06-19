@@ -1,5 +1,6 @@
 import React from "react";
 import convertSize from "convert-size";
+import FileSaver from "file-saver";
 
 import "./File.css";
 
@@ -14,10 +15,29 @@ export default function File({ key, data }) {
 		);
 	}
 
+	function preview(datum) {
+		if (!datum) {
+			return;
+		}
+		if (data.type.substring(0, data.type.indexOf("/")) == "image") {
+			return <img className="preview" src={datum} />;
+		} else if (data.type.substring(0, data.type.indexOf("/")) == "video") {
+			return (
+				<video className="preview" controls>
+					<source src={datum} type="video/mp4" />
+				</video>
+			);
+		}
+	}
+
+	function download() {
+		FileSaver.saveAs(data.data, data.name);
+	}
+
 	if (!data.download) {
 		return (
 			<li className="file" key={key}>
-				<img className="preview" src={data.preview} />
+				{preview(data.preview)}
 				{getInfo()}
 				<div className="progress">
 					{/* <div className="progress-finished">
@@ -30,10 +50,12 @@ export default function File({ key, data }) {
 	} else {
 		return (
 			<li className="file" key={key}>
-				<img className="preview" src={data.data} />
+				{preview(data.data)}
 				{getInfo()}
 				<div className="progress">
-					<div className="progress-info">Download</div>
+					<div className="progress-info" onClick={() => download()}>
+						<span className="download">Download</span>
+					</div>
 				</div>
 			</li>
 		);
