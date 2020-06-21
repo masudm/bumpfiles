@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { get_file, send_file, sent_file } from "../../redux/actions/transfer";
+import { get_file, send_file, sent_file, getting_file } from "../../redux/actions/transfer";
 
 import "./Transfer.css";
 import Uploader from "../Uploader/Uploader";
@@ -36,6 +36,7 @@ export function Transfer() {
 		let fileDownloaded = 0;
 		let fileChunks = [];
 		let fileInfo = null;
+		let fileId = Date.now();
 		let transferringFile = false;
 		state.bump.peer.on("data", (data) => {
 			let str = data.toString();
@@ -43,7 +44,7 @@ export function Transfer() {
 				transferringFile = false;
 				const file = new Blob(fileChunks);
 				const localImg = window.URL.createObjectURL(file);
-				dispatch(get_file(Date.now(), fileInfo.name, fileInfo.size, fileInfo.mime, localImg));
+				dispatch(get_file(fileId, localImg));
 				fileChunks = [];
 				fileDownloaded = 0;
 			}
@@ -55,8 +56,10 @@ export function Transfer() {
 			}
 
 			if (str.substring(0, 4) == "info") {
+				fileId = Date.now();
 				fileInfo = JSON.parse(str.substring(4));
 				transferringFile = true;
+				dispatch(getting_file(fileId, fileInfo.name, fileInfo.size, fileInfo.mime));
 			}
 		});
 	}

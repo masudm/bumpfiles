@@ -53,8 +53,14 @@ export default function File({ key, data }) {
 				{preview(data.data)}
 				{getInfo()}
 				<div className="progress">
-					<div className="progress-info" onClick={() => download()}>
-						<span className="download">Download</span>
+					<div className="progress-info">
+						{data.done ? (
+							<div className="progress-info" onClick={() => download()}>
+								<span className="download">Download</span>
+							</div>
+						) : (
+							`Recieving file...`
+						)}
 					</div>
 				</div>
 			</li>
