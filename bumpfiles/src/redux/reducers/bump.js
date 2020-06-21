@@ -16,6 +16,8 @@ export default function (state = initialState, action) {
 		case actions.BUMPED:
 			return Object.assign({}, state, {
 				peer: action.peer,
+				myUsername: action.myUsername,
+				connectedUsername: action.connectedUsername,
 			});
 		case actions.NOT_FOUND:
 			return Object.assign({}, state, {

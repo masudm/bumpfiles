@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
+import UsernameGen from "./UsernameGen";
 var SimplePeer = require("simple-peer");
 
 export function Home() {
@@ -40,7 +41,7 @@ export function Home() {
 
 		p.on("signal", (offer) => {
 			console.log("SIGNAL" + JSON.stringify(offer));
-			socket.emit("p2p", { offer: JSON.stringify(offer), recipient: data.recipient });
+			socket.emit("p2p", { offer: JSON.stringify(offer), recipient: data.recipient, username: UsernameGen });
 		});
 
 		socket.on("p2p", function (data) {
@@ -48,7 +49,7 @@ export function Home() {
 
 			p.on("connect", () => {
 				console.log("CONNECT");
-				dispatch(bumped(p));
+				dispatch(bumped(p, UsernameGen, data.username));
 
 				history.push("/transfer");
 			});

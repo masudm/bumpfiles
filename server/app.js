@@ -66,7 +66,7 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("p2p", function (data) {
-		io.to(data.recipient).emit("p2p", { offer: data.offer });
+		io.to(data.recipient).emit("p2p", { offer: data.offer, username: data.username });
 	});
 });
 

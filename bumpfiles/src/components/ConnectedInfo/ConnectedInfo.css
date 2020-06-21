@@ -1,0 +1,10 @@
+.connectedInfo {
+	background-color: white;
+	display: flex;
+	padding: 10px 20px;
+	margin-top: 10px;
+	border-radius: 10px;
+	font-family: "Josefin Sans", sans-serif;
+	width: 100%;
+	justify-content: space-between;
+}

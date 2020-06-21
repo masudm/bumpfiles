@@ -9,6 +9,7 @@ import Uploader from "../Uploader/Uploader";
 import File from "../File/File";
 
 import "./SafariBlobFix";
+import ConnectedInfo from "../ConnectedInfo/ConnectedInfo";
 
 export function Transfer() {
 	/**
@@ -98,6 +99,7 @@ export function Transfer() {
 
 	return (
 		<div className="transfer">
+			<ConnectedInfo myUsername={state.bump.myUsername} connectedUsername={state.bump.connectedUsername} />
 			<Uploader onChange={send} />
 			<ul>
 				{state.transfer.files.map((value, index) => {
