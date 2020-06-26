@@ -45,8 +45,6 @@ export function Transfer() {
 				const file = new Blob(fileChunks);
 				const localImg = window.URL.createObjectURL(file);
 				dispatch(get_file(fileId, localImg));
-				fileChunks = [];
-				fileDownloaded = 0;
 			}
 
 			if (transferringFile) {
@@ -56,6 +54,8 @@ export function Transfer() {
 			}
 
 			if (str.substring(0, 4) == "info") {
+				fileChunks = [];
+				fileDownloaded = 0;
 				fileId = Date.now();
 				fileInfo = JSON.parse(str.substring(4));
 				transferringFile = true;
