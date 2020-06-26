@@ -1325,6 +1325,7 @@ var animals = [
 	"Zebra",
 ];
 
+//return some random combination of the two. doesn't really matter since not identifying in technical sense anyway, just for validation purposes
 export default (
 	adjectives[Math.floor(Math.random() * adjectives.length)] +
 	"-" +

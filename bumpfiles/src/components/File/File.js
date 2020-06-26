@@ -1,10 +1,12 @@
 import React from "react";
 import convertSize from "convert-size";
 import FileSaver from "file-saver";
+import PropTypes from "prop-types";
 
 import "./File.css";
 
-export default function File({ key, data }) {
+export default function File({ index, data }) {
+	//simple function to generate html about file info
 	function getInfo() {
 		return (
 			<div className="fileInfo">
@@ -15,6 +17,7 @@ export default function File({ key, data }) {
 		);
 	}
 
+	//function to generate wrapper html for video/images
 	function preview(datum) {
 		if (!datum) {
 			return;
@@ -30,26 +33,26 @@ export default function File({ key, data }) {
 		}
 	}
 
+	//on click, download
 	function download() {
 		FileSaver.saveAs(data.data, data.name);
 	}
 
+	//if we're the sender....
 	if (!data.download) {
 		return (
-			<li className="file" key={key}>
+			<li className="file" key={index}>
 				{preview(data.preview)}
 				{getInfo()}
 				<div className="progress">
-					{/* <div className="progress-finished">
-						<div className="progress-bar" />
-					</div> */}
 					<div className="progress-info">{data.done ? `Uploaded!` : `Uploading...`}</div>
 				</div>
 			</li>
 		);
 	} else {
+		//we're the reciever
 		return (
-			<li className="file" key={key}>
+			<li className="file" key={index}>
 				{preview(data.data)}
 				{getInfo()}
 				<div className="progress">
@@ -67,3 +70,8 @@ export default function File({ key, data }) {
 		);
 	}
 }
+
+File.propTypes = {
+	index: PropTypes.number,
+	data: PropTypes.object,
+};

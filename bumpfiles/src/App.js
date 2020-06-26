@@ -24,3 +24,5 @@ export default function App() {
 		</Router>
 	);
 }
+
+export const IO_SERVER_URL = "http://192.168.0.189:3001";

@@ -1,5 +1,6 @@
 import React from "react";
 import Files from "react-files";
+import PropTypes from "prop-types";
 
 import "./Uploader.css";
 
@@ -17,3 +18,7 @@ export default function Uploader({ onChange }) {
 		</div>
 	);
 }
+
+Uploader.propTypes = {
+	onChange: PropTypes.func,
+};
