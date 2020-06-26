@@ -36,7 +36,7 @@
 .progress-bar {
 	height: 10px;
 	width: 50%;
-	background-color: #685fff;
+	background-color: #37dbe0;
 	border-radius: 10px;
 }
 
@@ -54,6 +54,6 @@
 
 .download {
 	text-decoration: underline;
-	color: #685fff;
+	color: #37dbe0;
 	cursor: pointer;
 }

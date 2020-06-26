@@ -2,25 +2,25 @@
 	cursor: pointer;
 	font-size: 5em;
 	font-family: "Josefin Sans", sans-serif;
-	color: #685fff;
+	color: #37dbe0;
 	background-color: white;
 	display: inline;
 	padding: 0.2em;
 	padding-bottom: 0px;
 	animation: fadeOutRGBA 3s linear infinite;
 	border-radius: 10px;
-	box-shadow: 5px 5px 6px 0px rgba(104, 95, 255, 0.5);
+	box-shadow: -2px -2px 11px rgba(41, 162, 166, 0.5), 2px 2px 11px rgba(69, 255, 255, 0.5);
 }
 
 @keyframes fadeOutRGBA {
 	0% {
-		box-shadow: 5px 5px 6px 0px rgba(104, 95, 255, 1);
+		box-shadow: -2px -2px 11px rgba(41, 162, 166, 1), 2px 2px 11px rgba(69, 255, 255, 1);
 	}
 	50% {
-		box-shadow: 5px 5px 6px 0px rgba(104, 95, 255, 0.5);
+		box-shadow: -2px -2px 11px rgba(41, 162, 166, 0.5), 2px 2px 11px rgba(69, 255, 255, 0.5);
 	}
 	100% {
-		box-shadow: 5px 5px 6px 0px rgba(104, 95, 255, 1);
+		box-shadow: -2px -2px 11px rgba(41, 162, 166, 1), 2px 2px 11px rgba(69, 255, 255, 1);
 	}
 }
 
