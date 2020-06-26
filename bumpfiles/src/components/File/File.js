@@ -22,9 +22,9 @@ export default function File({ index, data }) {
 		if (!datum) {
 			return;
 		}
-		if (data.type.substring(0, data.type.indexOf("/")) == "image") {
-			return <img className="preview" src={datum} />;
-		} else if (data.type.substring(0, data.type.indexOf("/")) == "video") {
+		if (data.type.substring(0, data.type.indexOf("/")) === "image") {
+			return <img className="preview" src={datum} alt="preview" />;
+		} else if (data.type.substring(0, data.type.indexOf("/")) === "video") {
 			return (
 				<video className="preview" controls>
 					<source src={datum} type="video/mp4" />

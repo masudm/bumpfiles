@@ -16,7 +16,7 @@ export default function (state = initialState, action) {
 				files: [...state.files, action.payload],
 			};
 		case actions.TRANSFERRED:
-			fileIndex = state.files.findIndex((element) => element.time == action.payload.time);
+			fileIndex = state.files.findIndex((element) => element.time === action.payload.time);
 			return update(state, {
 				files: {
 					[fileIndex]: {
@@ -25,7 +25,7 @@ export default function (state = initialState, action) {
 				},
 			});
 		case actions.RECIEVED:
-			fileIndex = state.files.findIndex((element) => element.time == action.payload.time);
+			fileIndex = state.files.findIndex((element) => element.time === action.payload.time);
 			return update(state, {
 				files: {
 					[fileIndex]: {

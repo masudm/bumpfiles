@@ -42,7 +42,7 @@ export function Transfer() {
 			//data is sent in this order: info, DATA, end
 			//so when recieving, check this order BACKWARDS - check if done, then for data, then for info
 
-			if (str == END_STATE) {
+			if (str === END_STATE) {
 				transferringFile = false;
 				const file = new Blob(fileChunks); //convert all the chunks into a data blob
 				const localImg = window.URL.createObjectURL(file); //which can be viewed locally
@@ -56,7 +56,7 @@ export function Transfer() {
 				//console.log("finished: " + Math.min(100, (fileDownloaded / fileInfo.size) * 100) + "%");
 			}
 
-			if (str.substring(0, START_STATE.length) == START_STATE) {
+			if (str.substring(0, START_STATE.length) === START_STATE) {
 				//reset the data vars
 				fileChunks = [];
 				fileDownloaded = 0;
