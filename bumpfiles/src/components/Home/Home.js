@@ -11,6 +11,7 @@ import "./Home.css";
 import { IO_SERVER_URL } from "../../App";
 
 var SimplePeer = require("simple-peer");
+var Shake = require("shake.js");
 
 export function Home() {
 	const history = useHistory();
@@ -28,6 +29,20 @@ export function Home() {
 			gotBumped(data);
 		});
 	});
+
+	//for shaking: https://github.com/alexgibson/shake.js/
+	var shakeEvent = new Shake({
+		threshold: 3, // optional shake strength threshold
+	});
+	shakeEvent.start();
+	alert("shakea!");
+	document.addEventListener("shake", shakeEventDidOccur, false);
+
+	//function to call when shake occurs
+	function shakeEventDidOccur() {
+		//put your own code here etc.
+		alert("shake!");
+	}
 
 	const initiateBump = () => {
 		socket.emit("bump", { time: Date.now() });

@@ -73,3 +73,11 @@ io.on("connection", (socket) => {
 http.listen(port, () => {
 	console.log("listening on " + port);
 });
+
+//cleanup mysql rows since we do not need old rows
+//every minute delete any rows that are more than 5 seconds old
+setInterval(() => {
+	pool.query(`DELETE FROM connections WHERE timestamp < ${Date.now() - 5 * 1000}`, function (error, results) {
+		//console.log(error, results);
+	});
+}, 60 * 1000);
