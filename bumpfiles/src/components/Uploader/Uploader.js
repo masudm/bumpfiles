@@ -11,7 +11,7 @@ export default function Uploader({ onChange }) {
 				className="uploader"
 				dropActiveClassName="uploader-drag"
 				onChange={onChange}
-				multiple={false}
+				multiple={true}
 				clickable>
 				Drop your file here or <b>click to browse</b>
 			</Files>

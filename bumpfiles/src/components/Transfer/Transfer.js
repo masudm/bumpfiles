@@ -69,9 +69,20 @@ export function Transfer() {
 		});
 	}
 
-	function send(data) {
-		const file = data[0]; //returns an array since it supports multiple files, but we only deal with one
+	let queue = [];
 
+	function send(data) {
+		queue = data;
+		checkQueue();
+	}
+
+	function checkQueue() {
+		if (queue.length > 0) {
+			sendData(queue.pop());
+		}
+	}
+
+	function sendData(file) {
 		//create some metadata
 		const fileInfo = {
 			name: file.name,
@@ -105,6 +116,9 @@ export function Transfer() {
 			// End message to signal that all chunks have been sent
 			state.bump.peer.send(END_STATE);
 			dispatch(sent_file(fileId));
+
+			//if there's more, do it again
+			checkQueue();
 		});
 	}
 
