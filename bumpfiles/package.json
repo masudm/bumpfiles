@@ -6,6 +6,7 @@
 		"convert-size": "^1.0.9",
 		"file-saver": "^2.0.2",
 		"immutability-helper": "^3.1.1",
+		"jszip": "^3.5.0",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-files": "^2.4.8",

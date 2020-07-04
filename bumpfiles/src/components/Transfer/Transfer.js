@@ -10,6 +10,7 @@ import File from "../File/File";
 
 import "./SafariBlobFix"; //https://gist.github.com/hanayashiki/8dac237671343e7f0b15de617b0051bd
 import ConnectedInfo from "../ConnectedInfo/ConnectedInfo";
+import DownloadAll from "../DownloadAll/DownloadAll";
 
 export function Transfer() {
 	const chunkSize = 16 * 1024; //best http://viblast.com/blog/2015/2/5/webrtc-data-channel-message-size/
@@ -126,6 +127,7 @@ export function Transfer() {
 		<div className="transfer">
 			<ConnectedInfo myUsername={state.bump.myUsername} connectedUsername={state.bump.connectedUsername} />
 			<Uploader onChange={send} />
+			<DownloadAll files={state.transfer.files} />
 			<ul>
 				{state.transfer.files.map((value, index) => {
 					return <File key={index} data={value} />;
