@@ -1,0 +1,36 @@
+.alert {
+	position: absolute;
+	color: black;
+	bottom: 0;
+	left: 0;
+	width: 99%;
+	width: calc(100% - 20px);
+	background-color: white;
+	padding: 10px;
+	display: flex;
+	justify-content: space-around;
+	font-family: "Josefin Sans", sans-serif;
+	align-items: center;
+}
+
+.button {
+	border: 2px solid #1b1d27;
+	padding: 5px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+.button.ok {
+	background-color: #37e0b6;
+	color: #1b1d27;
+	border: 2px solid #37e0b6;
+}
+
+.button.notok {
+	background-color: #e0a937;
+	color: #1b1d27;
+	border: 2px solid #e0a937;
+}
+
+.button:hover {
+	border: 2px solid #1b1d27;
+}

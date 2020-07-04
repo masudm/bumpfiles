@@ -7,3 +7,6 @@ export const RECEIVING = "RECEIVING"; //when a file is being downloaded (and upl
 
 export const TRANSFERRED = "TRANSFERRED"; //when a file has finished uploading
 export const RECIEVED = "RECIEVED"; //get a file
+
+export const SHOW_ALERT = "SHOW_ALERT";
+export const HIDE_ALERT = "HIDE_ALERT";

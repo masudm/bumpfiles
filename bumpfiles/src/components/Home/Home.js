@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 
 import { bump, bumped, not_found } from "../../redux/actions/bump";
+import { show_alert, hide_alert } from "../../redux/actions/alert";
 
 import BumpButton from "../Bump/Bump";
 import UsernameGen from "./UsernameGen";
@@ -30,27 +31,63 @@ export function Home() {
 		});
 	});
 
-	//for shaking: https://github.com/alexgibson/shake.js/
-	var shakeEvent = new Shake({
-		threshold: 3, // optional shake strength threshold
-	});
-	shakeEvent.start();
-	alert("shakea!");
-	document.addEventListener("shake", shakeEventDidOccur, false);
+	useEffect(() => {
+		//IOS has weird requirements for device motion
+		if (typeof DeviceOrientationEvent.requestPermission === "function") {
+			dispatch(
+				show_alert(
+					"Allow physical bumping?",
+					() => getDevicePermission(),
+					() => dispatch(hide_alert()),
+					"Allow",
+					"Ignore"
+				)
+			);
+		} else {
+			initShaking();
+		}
+
+		document.addEventListener("keydown", (e) => {
+			if (e.keyCode == 32) {
+				initiateBump();
+			}
+		});
+	}, []);
+
+	function getDevicePermission() {
+		DeviceOrientationEvent.requestPermission()
+			.then((permissionState) => {
+				alert(permissionState);
+				if (permissionState == "granted") {
+					initShaking();
+				}
+			})
+			.catch(console.error)
+			.then(dispatch(hide_alert()));
+	}
+
+	function initShaking() {
+		//for shaking: https://github.com/alexgibson/shake.js/
+		var shakeEvent = new Shake({
+			threshold: 3, // optional shake strength threshold
+		});
+		shakeEvent.start();
+		document.addEventListener("shake", shakeEventDidOccur, false);
+	}
 
 	//function to call when shake occurs
 	function shakeEventDidOccur() {
-		//put your own code here etc.
-		alert("shake!");
+		initiateBump();
 	}
 
 	const initiateBump = () => {
 		socket.emit("bump", { time: Date.now() });
 		dispatch(bump(Date.now()));
 
+		//same as interval on server, not found after 1 second
 		window.setTimeout(() => {
 			dispatch(not_found());
-		}, 5000);
+		}, 1000);
 	};
 
 	const gotBumped = (data) => {

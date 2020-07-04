@@ -1,12 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { Home } from "./components/Home/Home";
 import { Transfer } from "./components/Transfer/Transfer";
 
 import "./App.css";
+import Alert from "./components/Alert/Alert";
 
 export default function App() {
+	const state = useSelector((state) => state.alert);
 	return (
 		<Router>
 			<div>
@@ -20,6 +23,7 @@ export default function App() {
 						<Home />
 					</Route>
 				</Switch>
+				<Alert {...state} />
 			</div>
 		</Router>
 	);

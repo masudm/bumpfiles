@@ -17,7 +17,7 @@ const pool = mysql.createPool({
 });
 
 const port = 3001;
-const interval = 5000; //t - interval <= t <= t + interval  within this interval to be considered
+const interval = 1000; //t - interval <= t <= t + interval  within this interval to be considered (ms)
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -75,9 +75,9 @@ http.listen(port, () => {
 });
 
 //cleanup mysql rows since we do not need old rows
-//every minute delete any rows that are more than 5 seconds old
+//every minute delete any rows that are more than 10 seconds old
 setInterval(() => {
-	pool.query(`DELETE FROM connections WHERE timestamp < ${Date.now() - 5 * 1000}`, function (error, results) {
+	pool.query(`DELETE FROM connections WHERE timestamp < ${Date.now() - 10 * 1000}`, function (error, results) {
 		//console.log(error, results);
 	});
 }, 60 * 1000);
