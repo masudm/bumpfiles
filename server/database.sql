@@ -5,7 +5,7 @@ CREATE TABLE `bumpfiles`.`connections` (
   `timestamp` BIGINT NOT NULL,
   `ip` VARCHAR(15) NULL,
   `location` POINT NULL,
-  `device` VARCHAR(30) NOT NULL
+  `device` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id`, `timestamp`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
 ENGINE = InnoDB;
