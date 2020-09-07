@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const app = require("express")();
 const http = require("http").createServer(app);
-const io = require("socket.io")(http);
+const io = require("socket.io")(http, { log: false, origins: "*:*" });
 const bodyParser = require("body-parser");
 
 const geoip = require("geoip-lite");
@@ -18,6 +18,14 @@ const pool = mysql.createPool({
 
 const port = 3001;
 const interval = 1000; //t - interval <= t <= t + interval  within this interval to be considered (ms)
+
+app.use(function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	res.header("Access-Control-Allow-Headers", "Content-Type");
+	res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+	next();
+});
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
