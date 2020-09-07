@@ -29,4 +29,4 @@ export default function App() {
 	);
 }
 
-export const IO_SERVER_URL = "http://192.168.0.189:3001";
+export const IO_SERVER_URL = "https://bumpfiles.masudm.ml/";
