@@ -8,6 +8,8 @@ const Help = () => {
 			<h3>If using mobile device, try 'bumping' the devices together</h3>
 			<br />
 			<h4>Or try bumping (pressing) the Space key on your computer with your phone </h4>
+			<br />
+			<a href="https://github.com/masudm/bumpfiles">https://github.com/masudm/bumpfiles</a>
 		</div>
 	);
 };
