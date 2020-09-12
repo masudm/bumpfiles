@@ -9,7 +9,7 @@ var JSZip = require("jszip");
 const DownloadAll = ({ files }) => {
 	function downloadableFiles() {
 		return files.filter((value, index) => {
-			if (value.download == true) {
+			if (value.download === true) {
 				return value;
 			}
 		});

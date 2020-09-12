@@ -6,7 +6,7 @@ import Help from "../Help/Help";
 
 const BumpButton = ({ onClick, isListening, time }) => {
 	return (
-		<div>
+		<div className="bumpcontainer">
 			<div className="bump" onClick={() => onClick()}>
 				{isListening ? "BUMPED!" : "BUMP"}
 			</div>

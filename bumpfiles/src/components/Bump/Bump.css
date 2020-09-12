@@ -1,3 +1,7 @@
+.bumpcontainer {
+	text-align: center;
+}
+
 .bump {
 	cursor: pointer;
 	font-size: 5em;

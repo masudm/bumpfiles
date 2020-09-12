@@ -48,17 +48,23 @@ export function Home() {
 		}
 
 		document.addEventListener("keydown", (e) => {
-			if (e.keyCode == 32) {
+			if (e.keyCode === 32) {
 				initiateBump();
 			}
 		});
 	}, []);
 
 	function getDevicePermission() {
+		let allowed = false;
 		DeviceOrientationEvent.requestPermission()
 			.then((permissionState) => {
-				alert(permissionState);
-				if (permissionState == "granted") {
+				allowed = permissionState;
+			})
+			.then(() => DeviceMotionEvent.requestPermission())
+			.then((permissionState) => {
+				allowed = allowed === permissionState ? "allowed" : "disabled";
+				alert("physical bumping: " + allowed);
+				if (permissionState === "granted") {
 					initShaking();
 				}
 			})
@@ -70,13 +76,15 @@ export function Home() {
 		//for shaking: https://github.com/alexgibson/shake.js/
 		var shakeEvent = new Shake({
 			threshold: 3, // optional shake strength threshold
+			timeout: 1000, // optional, determines the frequency of event generation
 		});
 		shakeEvent.start();
-		document.addEventListener("shake", shakeEventDidOccur, false);
+		window.addEventListener("shake", shakeEventDidOccur, false);
 	}
 
 	//function to call when shake occurs
 	function shakeEventDidOccur() {
+		// alert("shake");
 		initiateBump();
 	}
 
